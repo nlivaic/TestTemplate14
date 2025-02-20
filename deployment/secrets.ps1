@@ -1,4 +1,4 @@
-param ($keyVaultName, $dbConnectionString, $messageBrokerConnectionString)
+param ($keyVaultName, $dbConnectionString, $messageBrokerConnectionString, $authAuthority, $authAudience, $authValidIssuer)
 
 # Will expose method NewPassword
 . $PSScriptRoot\secretGenerator.ps1
@@ -11,6 +11,9 @@ $sqlAdminPasswordSecretName = "SqlAdminPassword"
 $dbConnectionName = 'TestTemplate14DbConnection'
 $messageBrokerName = 'MessageBroker'
 $applicationInsightsConnectionName = 'ApplicationInsightsConnectionString'
+$auth_authority_env_var_name = 'AuthAuthority'
+$auth_audience_env_var_name = 'AuthAudience'
+$auth_valid_issuer_env_var_name = 'AuthValidIssuer'
 
 # We have to check whether all the relevant secrets are in there.
 # If not, generate those secrets and store in Key Vault.
@@ -26,6 +29,27 @@ $exists = az keyvault secret list --vault-name $keyVaultName --query $query
 if ($exists -eq "false") {
 	az keyvault secret set --vault-name $keyVaultName --name $sqlAdminPasswordSecretName --value $(NewPassword) --output none
 	Write-Host "##[section]Set secret $sqlAdminPasswordSecretName"
+}
+
+$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($auth_authority_env_var_name)')"
+$exists = az keyvault secret list --vault-name $keyVaultName --query $query
+if ($exists -eq "false") {
+	az keyvault secret set --vault-name $keyVaultName --name $auth_authority_env_var_name --value "$($authAuthority)" --output none
+	Write-Host "##[section]Set secret $auth_authority_env_var_name"
+}
+
+$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($auth_audience_env_var_name)')"
+$exists = az keyvault secret list --vault-name $keyVaultName --query $query
+if ($exists -eq "false") {
+	az keyvault secret set --vault-name $keyVaultName --name $auth_audience_env_var_name --value "$($authAudience)" --output none
+	Write-Host "##[section]Set secret $auth_audience_env_var_name"
+}
+
+$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($auth_valid_issuer_env_var_name)')"
+$exists = az keyvault secret list --vault-name $keyVaultName --query $query
+if ($exists -eq "false") {
+	az keyvault secret set --vault-name $keyVaultName --name $auth_valid_issuer_env_var_name --value "$($authValidIssuer)" --output none
+	Write-Host "##[section]Set secret $auth_valid_issuer_env_var_name"
 }
 
 ################################################################
