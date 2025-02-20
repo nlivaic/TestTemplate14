@@ -1,0 +1,1 @@
+./src/wait-for-it.sh testtemplate14.sql:5432 --timeout=0 --strict -- sleep 5s && dotnet ./TestTemplate14.WorkerServices.dll
