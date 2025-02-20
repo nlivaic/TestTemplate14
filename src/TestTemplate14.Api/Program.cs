@@ -12,7 +12,7 @@ namespace TestTemplate14.Api
     {
         public static void Main(string[] args)
         {
-            LoggerExtensions.ConfigureSerilogLogger("ASPNETCORE_ENVIRONMENT");
+            LoggerExtensions.ConfigureSerilogLogger("ASPNETCORE_ENVIRONMENT"); 
 
             try
             {
