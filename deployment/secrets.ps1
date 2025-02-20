@@ -11,9 +11,9 @@ $sqlAdminPasswordSecretName = "SqlAdminPassword"
 $dbConnectionName = 'TestTemplate14DbConnection'
 $messageBrokerName = 'MessageBroker'
 $applicationInsightsConnectionName = 'ApplicationInsightsConnectionString'
-$auth_authority_env_var_name = 'AuthAuthority'
-$auth_audience_env_var_name = 'AuthAudience'
-$auth_valid_issuer_env_var_name = 'AuthValidIssuer'
+$authoritySecretName = 'AuthAuthority'
+$audienceSecretName = 'AuthAudience'
+$validIssuerSecretName = 'AuthValidIssuer'
 
 # We have to check whether all the relevant secrets are in there.
 # If not, generate those secrets and store in Key Vault.
@@ -31,25 +31,25 @@ if ($exists -eq "false") {
 	Write-Host "##[section]Set secret $sqlAdminPasswordSecretName"
 }
 
-$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($auth_authority_env_var_name)')"
+$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($authoritySecretName)')"
 $exists = az keyvault secret list --vault-name $keyVaultName --query $query
 if ($exists -eq "false") {
-	az keyvault secret set --vault-name $keyVaultName --name $auth_authority_env_var_name --value "$($authAuthority)" --output none
-	Write-Host "##[section]Set secret $auth_authority_env_var_name"
+	az keyvault secret set --vault-name $keyVaultName --name $authoritySecretName --value "$($authAuthority)" --output none
+	Write-Host "##[section]Set secret $authoritySecretName"
 }
 
-$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($auth_audience_env_var_name)')"
+$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($audienceSecretName)')"
 $exists = az keyvault secret list --vault-name $keyVaultName --query $query
 if ($exists -eq "false") {
-	az keyvault secret set --vault-name $keyVaultName --name $auth_audience_env_var_name --value "$($authAudience)" --output none
-	Write-Host "##[section]Set secret $auth_audience_env_var_name"
+	az keyvault secret set --vault-name $keyVaultName --name $audienceSecretName --value "$($authAudience)" --output none
+	Write-Host "##[section]Set secret $audienceSecretName"
 }
 
-$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($auth_valid_issuer_env_var_name)')"
+$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($validIssuerSecretName)')"
 $exists = az keyvault secret list --vault-name $keyVaultName --query $query
 if ($exists -eq "false") {
-	az keyvault secret set --vault-name $keyVaultName --name $auth_valid_issuer_env_var_name --value "$($authValidIssuer)" --output none
-	Write-Host "##[section]Set secret $auth_valid_issuer_env_var_name"
+	az keyvault secret set --vault-name $keyVaultName --name $validIssuerSecretName --value "$($authValidIssuer)" --output none
+	Write-Host "##[section]Set secret $validIssuerSecretName"
 }
 
 ################################################################
