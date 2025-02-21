@@ -31,25 +31,31 @@ if ($exists -eq "false") {
 	Write-Host "##[section]Set secret $sqlAdminPasswordSecretName"
 }
 
-$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($authoritySecretName)')"
-$exists = az keyvault secret list --vault-name $keyVaultName --query $query
-if ($exists -eq "false") {
-	az keyvault secret set --vault-name $keyVaultName --name $authoritySecretName --value "$($authAuthority)" --output none
-	Write-Host "##[section]Set secret $authoritySecretName"
+if ($authAuthority -ne $null) {
+	$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($authoritySecretName)')"
+	$exists = az keyvault secret list --vault-name $keyVaultName --query $query
+	if ($exists -eq "false") {
+		az keyvault secret set --vault-name $keyVaultName --name $authoritySecretName --value "$($authAuthority)" --output none
+		Write-Host "##[section]Set secret $authoritySecretName"
+	}
 }
 
-$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($audienceSecretName)')"
-$exists = az keyvault secret list --vault-name $keyVaultName --query $query
-if ($exists -eq "false") {
-	az keyvault secret set --vault-name $keyVaultName --name $audienceSecretName --value "$($authAudience)" --output none
-	Write-Host "##[section]Set secret $audienceSecretName"
+if ($authAudience -ne $null) {
+	$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($audienceSecretName)')"
+	$exists = az keyvault secret list --vault-name $keyVaultName --query $query
+	if ($exists -eq "false") {
+		az keyvault secret set --vault-name $keyVaultName --name $audienceSecretName --value "$($authAudience)" --output none
+		Write-Host "##[section]Set secret $audienceSecretName"
+	}
 }
 
-$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($validIssuerSecretName)')"
-$exists = az keyvault secret list --vault-name $keyVaultName --query $query
-if ($exists -eq "false") {
-	az keyvault secret set --vault-name $keyVaultName --name $validIssuerSecretName --value "$($authValidIssuer)" --output none
-	Write-Host "##[section]Set secret $validIssuerSecretName"
+if ($authValidIssuer -ne $null) {
+	$query = "contains([].id, 'https://$($keyVaultName).vault.azure.net/secrets/$($validIssuerSecretName)')"
+	$exists = az keyvault secret list --vault-name $keyVaultName --query $query
+	if ($exists -eq "false") {
+		az keyvault secret set --vault-name $keyVaultName --name $validIssuerSecretName --value "$($authValidIssuer)" --output none
+		Write-Host "##[section]Set secret $validIssuerSecretName"
+	}
 }
 
 ################################################################
