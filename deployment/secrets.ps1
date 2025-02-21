@@ -11,9 +11,9 @@ $sqlAdminPasswordSecretName = "SqlAdminPassword"
 $dbConnectionName = 'TestTemplate14DbConnection'
 $messageBrokerName = 'MessageBroker'
 $applicationInsightsConnectionName = 'ApplicationInsightsConnectionString'
-$authoritySecretName = 'AuthAuthority'
-$audienceSecretName = 'AuthAudience'
-$validIssuerSecretName = 'AuthValidIssuer'
+$authoritySecretName = "AuthAuthority"
+$audienceSecretName = "AuthAudience"
+$validIssuerSecretName = "AuthValidIssuer"
 
 # We have to check whether all the relevant secrets are in there.
 # If not, generate those secrets and store in Key Vault.
